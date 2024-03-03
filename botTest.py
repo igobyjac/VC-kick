@@ -68,4 +68,4 @@ targeted_victims: List[Tuple[int, float]] = config.get("targeted_victims", [])
 
 
 
-bot.run('MTIwMzM2NjYyOTEyMDAyNDYwNg.G6Ln44.80FuH9FYicTAXUpBA7MZZoUAGT-cekv_yDUlgI')
+bot.run('')
