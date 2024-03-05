@@ -8,11 +8,12 @@ import yaml
 from typing import Optional, List, Tuple
 
 
-intents = discord.Intents.default()
-
+intents = discord.Intents.all()
+intents.members = True
 
 bot = commands.Bot(command_prefix = '/', intents = intents)
 valMentions = 0
+
 @bot.event
 async def on_ready():
     print("The bot is now updated and ready for use")
@@ -21,11 +22,21 @@ async def on_ready():
 @bot.command()
 async def valCount(ctx):
     await ctx.send(valMentions)
-    print("bogoda")
+    await ctx.send("BOT WORKS")
 
 @bot.command()
 async def remove_random(ctx):
-    voice_channel = await retrieve_active_voice_channel()
+    this_guild = ctx.guild
+    sender = ctx.message.author
+    try:
+        voice_channel = ctx.message.author.voice.channel
+        print(voice_channel)
+    except AttributeError:
+        await ctx.send("Du bist in keinem Voice-Channel")
+        return
+    this_category = voice_channel.category
+    targeted_victims = voice_channel.members
+    
     while True:
         member_to_kick: Optional[discord.Member] = None
         random.shuffle(targeted_victims)
@@ -46,7 +57,6 @@ async def remove_random(ctx):
     await member_to_kick.edit(voice_channel=None)
     
 async def retrieve_active_voice_channel():
-    """Scans all active voice channels the bot can see and returns a random one"""
     # Get all channels the bot can see
     channels = [c for c in bot.get_all_channels()]
 
@@ -62,10 +72,6 @@ async def retrieve_active_voice_channel():
 
 with open("config.yaml") as f:
     config = yaml.safe_load(f.read())
-         
-targeted_victims: List[Tuple[int, float]] = config.get("targeted_victims", [])
-
-
-
+        
 
 bot.run('')
