@@ -33,12 +33,9 @@ async def remove_random(interaction: discord.Interaction):
         return
     
     chosen_user = random.choice(users)
-    embed = discord.Embed(title="Voice Channel Kick", description="")
-    embed.add_field(name="", value=chosen_user.mention + " has been kicked")
-    embed.set_thumbnail(url=chosen_user.avatar)
-    await interaction.response.send_message(embed=embed)
     await asyncio.sleep(1)
-    await chosen_user.edit(kick=True)
+    await chosen_user.move_to(None)
+    print(f'{chosen_user} has been kicked')
         
     
 bot.run('')
